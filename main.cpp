@@ -2,7 +2,8 @@
 
 using namespace std;
 
-int main(){
-  cout << "Hello World!" << endl;
-  return 0;
-}
+int main() {
+    ChessBoard myBoard = ChessBoard();
+    myBoard.printBoard();
+    return 0;
+} 
