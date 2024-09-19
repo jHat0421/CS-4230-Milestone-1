@@ -1,24 +1,7 @@
 #include <iostream>
 #include <array>
-//#include "chess.h"
+#include "chess.h"
 using namespace std;
-
-//enum which represents each chess piece or empty
-enum Piece { EMPTY=0, KING_WHITE, QUEEN_WHITE, BISHOP_WHITE, KNIGHT_WHITE, ROOK_WHITE, PAWN_WHITE,
-    KING_BLACK, QUEEN_BLACK, BISHOP_BLACK, KNIGHT_BLACK, ROOK_BLACK, PAWN_BLACK
-};
-
-class ChessBoard {
-  public:
-    std::array<Piece, 64> chessBoard = {EMPTY};
-    void setBoard();
-    void printBoard();
-    Piece getPiece(int); //returns piece in position
-    void setPiece(int,int); //given position to given piece
-    ChessBoard() {
-        setBoard();
-    }
-};
 
 //puts all pieces in their starting positions
 void ChessBoard::setBoard(){
@@ -58,6 +41,11 @@ Piece ChessBoard::getPiece(int pos) {
 
 //moves piece from old position to new, sets old to NONE
 void ChessBoard::setPiece(int oldPos,int newPos) {
+    // check if new position is within board
+    if (newPos < 0 && newPos > 63) {
+        cout << "Invalid move: destination is outside the board!" << endl;
+        return;
+    }
     chessBoard[newPos] = chessBoard[oldPos];
     chessBoard[oldPos] = EMPTY;
 }
@@ -69,10 +57,3 @@ void ChessBoard::printBoard(){
     }
     cout << endl;
 }
-
-
-int main() {
-    ChessBoard myBoard = ChessBoard();
-    myBoard.printBoard();
-    return 0;
-} 
