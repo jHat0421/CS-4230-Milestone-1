@@ -5,55 +5,41 @@ using namespace std;
 
 //puts all pieces in their starting positions
 void ChessBoard::setBoard(){
+    cout << "Setting board" << endl;
+
     //place white
-    Piece whiteArray[8] = {
-        ROOK_WHITE, KNIGHT_WHITE, BISHOP_WHITE, KING_WHITE, QUEEN_WHITE, BISHOP_WHITE, KNIGHT_WHITE, ROOK_WHITE
-    };
-    for (int i = 0; i<16; i++) {
-        if (i<8) {
-            chessBoard[i] = whiteArray[i];
-        }
-        else {
-            chessBoard[i] = PAWN_WHITE;
-        }
+    chessBoard[0] = {ROOK_WHITE, KNIGHT_WHITE, BISHOP_WHITE, KING_WHITE, QUEEN_WHITE, BISHOP_WHITE, KNIGHT_WHITE, ROOK_WHITE};
+    for (int i = 0; i<8; i++) 
+    {
+        chessBoard[1][i] = PAWN_WHITE;
     }
 
     //place black
-    Piece blackArray[8] = {
-        ROOK_BLACK, KNIGHT_BLACK, BISHOP_BLACK, QUEEN_BLACK, KING_BLACK, BISHOP_BLACK, KNIGHT_BLACK, ROOK_BLACK
-    };
-    int j = 0;
-    for (int i = 63; i>48; i--) {
-        if (i>=56) {
-            chessBoard[i] = PAWN_BLACK;
-        }
-        else {
-            chessBoard[i] = blackArray[j];
-            j++;
-        }
+    chessBoard[7] = {ROOK_BLACK, KNIGHT_BLACK, BISHOP_BLACK, KING_BLACK, QUEEN_BLACK, BISHOP_BLACK, KNIGHT_BLACK, ROOK_BLACK};
+    for (int i = 0; i<8; i++) 
+    {
+        chessBoard[6][i] = PAWN_BLACK;
     }
-
 }
+
 //returns the piece in specified position
-Piece ChessBoard::getPiece(int pos) {
-    return chessBoard[pos];
+Piece ChessBoard::getPiece(int x, int y) {
+    return chessBoard[x][y];
 }
 
 //moves piece from old position to new, sets old to NONE
-void ChessBoard::setPiece(int oldPos,int newPos) {
+void ChessBoard::movePiece(int oldX, int oldY, int newX, int newY) {
     // check if new position is within board
-    if (newPos < 0 && newPos > 63) {
-        cout << "Invalid move: destination is outside the board!" << endl;
-        return;
-    }
-    chessBoard[newPos] = chessBoard[oldPos];
-    chessBoard[oldPos] = EMPTY;
+    chessBoard[newX][newY] = chessBoard[oldX][oldY];
+    chessBoard[oldX][oldY] = EMPTY;
 }
 
 //prints the chess board
 void ChessBoard::printBoard(){
-    for (int i = 0; i < 64; i++){
-        cout << i << ":" << chessBoard[i] << " ";
+    for (int i = 7; i>=0; i--) {
+        for (int j = 7; j>=0; j--) {
+            cout << chessBoard[i][j];
+        }
+        cout << endl;
     }
-    cout << endl;
 }

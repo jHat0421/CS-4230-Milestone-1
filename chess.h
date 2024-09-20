@@ -13,11 +13,11 @@ enum Piece { EMPTY=0, KING_WHITE, QUEEN_WHITE, BISHOP_WHITE, KNIGHT_WHITE, ROOK_
 //Class to represent chess board
 class ChessBoard {
   public:
-    std::array<Piece, 64> chessBoard = {EMPTY};
+    std::array<std::array<Piece, 8>, 8> chessBoard = {EMPTY};
     void setBoard();
     void printBoard();
-    Piece getPiece(int); //returns piece in position
-    void setPiece(int,int); //given position to given piece
+    Piece getPiece(int x, int y); //returns piece in position
+    void movePiece(int oldX, int oldY, int newX, int newY); //move piece from old position to new position
     ChessBoard() {
         setBoard();
     }
