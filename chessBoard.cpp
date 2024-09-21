@@ -36,10 +36,18 @@ void ChessBoard::movePiece(int oldX, int oldY, int newX, int newY) {
 
 //prints the chess board
 void ChessBoard::printBoard(){
-    for (int i = 7; i>=0; i--) {
-        for (int j = 7; j>=0; j--) {
-            cout << chessBoard[i][j];
+    std::array<char, 13> letters = {' ', 'K', 'Q', 'B', 'N', 'R', 'P', 'k', 'q', 'b', 'n', 'r', 'p'};
+    std::cout << "     A   B   C   D   E   F   G   H  " << std::endl;
+    for (int i = 8; i > 0; i--)
+    {
+        std::cout << "   ---------------------------------" << std::endl;
+        std::cout << " " << i << " | ";
+        for (int j = 0; j < 8; j++) 
+        {
+            std::cout << letters[chessBoard[i - 1][j]];
+            std::cout << " | ";
         }
-        cout << endl;
+        std::cout << std::endl;
     }
+    std::cout << "   ---------------------------------" << std::endl << std::endl;
 }
