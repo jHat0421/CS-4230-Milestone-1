@@ -30,7 +30,7 @@ class ChessGame {
   public:
     ChessGame();
     bool currentPlayer; //Keeps track of current player
-    void checkMove(); //Keep track of game logic
+    bool checkMove(ChessBoard& board, int oldX, int oldY, int newX, int newY); //Keep track of game logic
     void getMove();
     bool isInCheck(); //Checks for check. 
 };

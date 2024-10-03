@@ -1,6 +1,7 @@
+#include "chess.h"
 #include <iostream>
 #include <array>
-#include "chess.h"
+
 using namespace std;
 
 //puts all pieces in their starting positions

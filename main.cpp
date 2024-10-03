@@ -1,6 +1,7 @@
 //#include <iostate>
-#include "chess.cpp"
+#include "chess.h"
 #include "chessBoard.cpp"
+#include "chess.cpp"
 
 using namespace std;
 
