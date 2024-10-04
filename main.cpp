@@ -7,8 +7,7 @@ using namespace std;
 
 int main() {
     ChessBoard myBoard = ChessBoard();
+    ChessGame game = ChessGame();
     myBoard.printBoard();
-    cout << myBoard.getPiece(0,7);
-    printf("♔");
     return 0;
 } 

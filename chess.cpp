@@ -1,7 +1,14 @@
 #include <iostream>
 #include <array>
 #include "chess.h"
+
 using namespace std;
+
+// ChessGame constructor
+ChessGame::ChessGame() {
+    // Initialize the currentPlayer to true (White to move first)
+    currentPlayer = true;
+}
 
 //checkMove helper function to check if the path between start and end for sliding pieces (rook, bishop, queen) is clear
 bool isPathClear(ChessBoard& board, int oldX, int oldY, int newX, int newY) {
@@ -65,8 +72,10 @@ bool ChessGame::checkMove(ChessBoard& board, int oldX, int oldY, int newX, int n
         case QUEEN_WHITE:
         case QUEEN_BLACK:
             // Queen moves like a rook or bishop
-            return ((deltaX == 0 || deltaY == 0 || abs(deltaX) == abs(deltaY)) && isPathClear(board, oldX, oldY, newX, newY));
-
+            if ((deltaX == 0 || deltaY == 0 || abs(deltaX) == abs(deltaY)) && isPathClear(board, oldX, oldY, newX, newY)) {
+                return true;
+            }
+            return false;
         //Check Rook Movement
         case ROOK_WHITE:
         case ROOK_BLACK:
@@ -109,3 +118,71 @@ bool ChessGame::checkMove(ChessBoard& board, int oldX, int oldY, int newX, int n
             return false;
     }
 }
+
+void ChessGame::getMove(ChessBoard& board) 
+{
+    int oldX, oldY, newX, newY;
+    bool moveValid = false;
+
+    // Loop until a valid move is entered
+    while (!moveValid) 
+    {
+        // Prompt the player for input
+        cout << "Enter your move in the format oldX oldY newX newY: ";
+        cin >> oldX >> oldY >> newX >> newY;
+
+        // Validate the move using checkMove
+        moveValid = checkMove(board, oldX, oldY, newX, newY);
+
+        if (!moveValid) 
+        {
+            cout << "Invalid move. Please try again." << endl;
+        }
+    }
+
+    // Perform the move on the board if valid
+    board.movePiece(oldX, oldY, newX, newY);
+    
+    // Switch player after a valid move
+    currentPlayer = !currentPlayer;
+}
+
+bool ChessGame::isInCheck(ChessBoard& board) {
+    int kingX = -1, kingY = -1;
+    Piece kingPiece = currentPlayer ? KING_WHITE : KING_BLACK;
+
+    // Find the current player's king on the board
+    for (int i = 0; i < 8; i++) {
+        for (int j = 0; j < 8; j++) {
+            if (board.getPiece(i, j) == kingPiece) {
+                kingX = i;
+                kingY = j;
+                break;
+            }
+        }
+    }
+
+    if (kingX == -1 || kingY == -1) {
+        cout << "Error: King not found on the board!" << endl;
+        return false;
+    }
+
+    // Check if any opponent's piece can move to the king's position
+    for (int i = 0; i < 8; i++) {
+        for (int j = 0; j < 8; j++) {
+            Piece opponentPiece = board.getPiece(i, j);
+
+            // Skip empty squares and current player's pieces
+            if (opponentPiece == EMPTY || (currentPlayer && isWhite(opponentPiece)) || (!currentPlayer && isBlack(opponentPiece))) {
+                continue;
+            }
+
+            // If any opponent piece can move to the king's position, the king is in check
+            if (checkMove(board, i, j, kingX, kingY)) {
+                return true;  // King is in check
+            }
+        }
+    }
+    return false;  // King is not in check
+}
+
