@@ -31,7 +31,7 @@ class ChessGame {
     ChessGame();
     bool currentPlayer; //Keeps track of current player
     bool checkMove(ChessBoard& board, int oldX, int oldY, int newX, int newY); //Keep track of game logic
-    void getMove(ChessBoard& board);
+    void movePiece(ChessBoard& board);
     bool isInCheck(ChessBoard& board); //Checks for check. 
 };
 
