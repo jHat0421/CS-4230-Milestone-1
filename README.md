@@ -1,8 +1,10 @@
-BUILD INSTRUCTIONS:
-
-0.) Ensure you have CMake installed on your machine and added to system PATH.
-1.) Clone repository.
-2.) Create new directory in repository named 'build.'
-3.) Navigate to the new directory in the terminal, and execute the command 'cmake ..'
-4.) After this command executes, execute in the terminal 'cmake --build .'
-5.) Execute the created .exe located in the 'Debug' directory created by the cmake init. 
+<div>
+  <h1> <u> Building with CMake: </u> </h1>
+  <ol>
+    <li> Ensure you have CMake installed on your machine and added to system PATH. </li>
+    <li> Clone repository. </li>
+    <li> Create new directory in newly cloned repository named 'build.' </li>
+    <li> Navigate to the new directory in the terminal, and execute the command 'cmake ..' </li>
+    <li>  Execute the created .exe located in the 'Debug' directory created by the previous command. </li>
+  </ol>
+</div>
