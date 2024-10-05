@@ -3,8 +3,8 @@
 
 #include "chess_board.h"
 
-#define WHITE (0)
-#define BLACK (1)
+#define WHITE (1)
+#define BLACK (0)
 
 class chess_game
 {
@@ -17,9 +17,11 @@ public:
 
   void pass_turn();
   void print_board();
+  bool get_player();
   bool check_move(int old_x, int old_y, int new_x, int new_y);
+  bool is_in_check();
   // void get_move();
-  //bool is_in_check();
+ 
 };
 
 #endif
