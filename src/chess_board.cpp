@@ -14,9 +14,14 @@ chess_board::chess_board(): board
     }
 } {}
 
-Piece chess_board::get_piece(int x, int y) 
+Piece chess_board::get_piece(int x, int y) const
 {
     return board[x][y];
+}
+
+void chess_board::set_piece(int x, int y, Piece piece) 
+{
+    board[x][y] = piece;
 }
 
 void chess_board::move_piece(int old_x, int old_y, int new_x, int new_y) 
