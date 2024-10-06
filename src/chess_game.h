@@ -20,7 +20,8 @@ public:
   bool get_player();
   bool check_move(int old_x, int old_y, int new_x, int new_y);
   bool is_in_check();
-  // void get_move();
+  //bool check_end(); //check board to make sure both kings are alive, true if one is missing, game over
+  //bool try_move(); //execute move, true if success, false if fail
  
 };
 
