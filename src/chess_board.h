@@ -18,7 +18,8 @@ private:
 public:
   chess_board();
 
-  Piece get_piece(int x, int y);
+  Piece get_piece(int x, int y) const;
+  void set_piece(int x, int y, Piece piece);
   void move_piece(int old_x, int old_y, int new_x, int new_y);
   void print_board();
 };

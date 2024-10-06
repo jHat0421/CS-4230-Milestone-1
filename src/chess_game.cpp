@@ -1,10 +1,5 @@
 #include "chess_game.h"
 
-bool is_path_clear(int old_x, int old_y, int new_x, int new_y)
-{
-    return true;
-}
-
 bool is_white(Piece piece)
 {
     return piece >= KING_WHITE && piece <= PAWN_WHITE;
@@ -13,6 +8,60 @@ bool is_white(Piece piece)
 bool is_black(Piece piece)
 {
     return piece >= KING_BLACK && piece <= PAWN_BLACK;
+}
+
+bool is_path_clear(int old_x, int old_y, int new_x, int new_y, const chess_board& board)
+{
+    // Determine if the movement is vertical, horizontal, or diagonal
+    int delta_x = new_x - old_x;
+    int delta_y = new_y - old_y;
+
+    // Horizontal movement
+    if (delta_y == 0) 
+    {
+        int direction = (delta_x > 0) ? 1 : -1;  // Right or left
+        for (int i = old_x + direction; i != new_x; i += direction) 
+        {
+            if (board.get_piece(i, old_y) != EMPTY) 
+            {
+                return false;  // A piece is blocking the path
+            }
+        }
+    }
+    // Vertical movement
+    else if (delta_x == 0) 
+    {
+        int direction = (delta_y > 0) ? 1 : -1;  // Up or down
+        for (int i = old_y + direction; i != new_y; i += direction) 
+        {
+            if (board.get_piece(old_x, i) != EMPTY) 
+            {
+                return false;  // A piece is blocking the path
+            }
+        }
+    }
+    // Diagonal movement
+    else if (abs(delta_x) == abs(delta_y)) 
+    {
+        int direction_x = (delta_x > 0) ? 1 : -1;  // Right or left
+        int direction_y = (delta_y > 0) ? 1 : -1;  // Up or down
+
+        for (int i = 1; i < abs(delta_x); ++i) 
+        {
+            if (board.get_piece(old_x + i * direction_x, old_y + i * direction_y) != EMPTY) 
+            {
+                return false;  // A piece is blocking the diagonal path
+            }
+        }
+    }
+    // Knight's move, path-checking not needed, but it can't land on an occupied square
+    else if ((abs(delta_x) == 2 && abs(delta_y) == 1) || (abs(delta_x) == 1 && abs(delta_y) == 2)) 
+    {
+        return board.get_piece(new_x, new_y) == EMPTY || 
+               (is_white(board.get_piece(old_x, old_y)) != is_white(board.get_piece(new_x, new_y)));
+    }
+
+    return true;  // No pieces in the path
 }
 
 chess_game::chess_game()
@@ -61,15 +110,15 @@ bool chess_game::check_move(int old_x, int old_y, int new_x, int new_y)
 
         case QUEEN_WHITE:
         case QUEEN_BLACK:
-            return ((delta_x == 0 || delta_y == 0 || abs(delta_x) == abs(delta_y)) && is_path_clear(old_x, old_y, new_x, new_y));
+            return ((delta_x == 0 || delta_y == 0 || abs(delta_x) == abs(delta_y)) && is_path_clear(old_x, old_y, new_x, new_y, board));
 
         case ROOK_WHITE:
         case ROOK_BLACK:
-            return ((delta_x == 0 || delta_y == 0) && is_path_clear(old_x, old_y, new_x, new_y));
+            return ((delta_x == 0 || delta_y == 0) && is_path_clear(old_x, old_y, new_x, new_y, board));
 
         case BISHOP_WHITE:
         case BISHOP_BLACK:
-            return (abs(delta_x) == abs(delta_y) && is_path_clear(old_x, old_y, new_x, new_y));
+            return (abs(delta_x) == abs(delta_y) && is_path_clear(old_x, old_y, new_x, new_y, board));
 
         case KNIGHT_WHITE:
         case KNIGHT_BLACK:
@@ -155,4 +204,18 @@ bool chess_game::is_in_check()
 
     std::cout << "King is not in check." << std::endl;
     return false;  // King is not in check
+}
+
+void chess_game::promote_pawn(int x, int y)
+{
+    Piece piece = board.get_piece(x,y);
+
+    if (piece == PAWN_WHITE && x == 7)
+    {
+        board.set_piece(x,y,QUEEN_WHITE);
+    }
+    else if (piece == PAWN_BLACK && x == 0)
+    {
+        board.set_piece(x,y,QUEEN_BLACK);
+    }
 }

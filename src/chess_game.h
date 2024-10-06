@@ -21,6 +21,7 @@ public:
   bool check_move(int old_x, int old_y, int new_x, int new_y);
   bool is_in_check();
   // void get_move();
+  void promote_pawn(int x, int y);
  
 };
 
