@@ -4,22 +4,6 @@
 
 #include"chess_game.h"
 
-// Converts chess's standard bottom left origin grid to a top left origin grid:
-std::array<int, 4> to_array_space(std::array<int, 4> input_coords)
-{
-    std::array<int, 4> output_coords;
-    
-    // x-coordinates remain unchanged:
-    output_coords[1] = input_coords[0] - 1;
-    output_coords[3] = input_coords[2] - 1;
-
-    // y-coordinates are inverted:
-    output_coords[0] = 8 - input_coords[1] - 1;
-    output_coords[2] = 8 - input_coords[3] - 1;
-
-    return output_coords;
-}
-
 // Returns array of coordinates, or null if 'q'
 std::array<int, 4> get_input() 
 {
@@ -46,9 +30,9 @@ std::array<int, 4> get_input()
             {
                 // Translate ASCII to corresponding int:
                 int old_x = match_results.str(1)[0] - 'a';
-                int old_y = match_results.str(1)[1] - '0';
+                int old_y = match_results.str(1)[1] - '0'-1;
                 int new_x = match_results.str(2)[0] - 'a';
-                int new_y = match_results.str(2)[1] - '0';
+                int new_y = match_results.str(2)[1] - '0'-1;
 
                 std::array<int, 4> result = {old_x, old_y, new_x, new_y};
                 return result;
@@ -92,7 +76,6 @@ void play_game(chess_game* game)
         {
             // Call formatted input handler:
             std::array<int, 4> input = get_input();
-            input = to_array_space(input);
             std::cout << "Input received." << std::endl;
             
             // If null input returned ('q' selection), exit game:
@@ -105,13 +88,15 @@ void play_game(chess_game* game)
             // Attempt to make move:
             if(game->check_move((input)[0],(input)[1], (input)[2], (input)[3]))
             {
+                //execute the move
+                game->make_move((input)[0],(input)[1], (input)[2], (input)[3]);
                 break;
             }
             else 
             {
+                //retry input
                 std::cout << "Invalid move, please try again." << std::endl;
             }
-            break;
         }
         
         // Check game over condition (eihter king missing):
