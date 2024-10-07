@@ -18,11 +18,10 @@ public:
   void pass_turn();
   void print_board();
   bool get_player();
-  bool check_move(int old_x, int old_y, int new_x, int new_y );
+  bool check_move(int old_x, int old_y, int new_x, int new_y);
   bool is_in_check();
   void promote_pawn(int x, int y);
-  bool check_end(chess_board& board);
-  //bool try_move(int old_x, int old_y, int new_x, int new_y); //execute move, true if success
+  bool check_end();
  
 };
 

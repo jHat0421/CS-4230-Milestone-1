@@ -188,7 +188,6 @@ bool chess_game::is_in_check()
 
             if (check_move(i, j, king_x, king_y)) 
             {
-                std::cout << "Check" << std::endl;
                 return true;
             }
         }
@@ -211,7 +210,7 @@ void chess_game::promote_pawn(int x, int y)
     }
 }
 
-bool check_end(chess_board& board)
+bool chess_game::check_end()
 {
     bool white_king_found = false;
     bool black_king_found = false;

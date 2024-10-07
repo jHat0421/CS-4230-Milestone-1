@@ -46,23 +46,23 @@ void play_game(chess_game* game)
                 return;
             }
             // attempt to make move
-            // bool success = game->try_move(input[1],input[2], input[3], input[4]);
-            // if(success){
-            //     break;
-            // }
-            // else {
-            //     std::cout << "the move was unsuccessful - try again" << std::endl;
-            // }
+            bool success = game->check_move((*input)[0],(*input)[1], (*input)[2], (*input)[3]);
+            if(success){
+                break;
+            }
+            else {
+                std::cout << "the move was unsuccessful - try again" << std::endl;
+            }
             break;
         }
         
 
 
-        //game over condition -- a king is missing
-        // if (game->check_end()) {
-        //     std::cout << "Quitting Game" << std::endl;
-        //     return;
-        // }
+        // game over condition -- a king is missing
+        if (game->check_end()) {
+            std::cout << "Quitting Game" << std::endl;
+            return;
+        }
 
         //check for check notify if a king is in check
         if (game->is_in_check()) {
