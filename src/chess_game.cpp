@@ -92,8 +92,24 @@ bool chess_game::check_move(int old_x, int old_y, int new_x, int new_y)
         std::cout << "Invalid move: No piece at selected position" << std::endl;
         return false;
     }
+    //check that piece matches current player and that the target piece is other team
+    if (is_white(piece) && !get_player()) {
+        std::cout << "Invalid move: Black can't move white" << std::endl;
+        return false;
+    }
+    if (is_black(piece) && get_player()) {
+        std::cout << "Invalid move: white can't move black" << std::endl;
+        return false;
+    }
 
-    if (new_x < 0 || new_x >= 8 || new_y < 0 || new_y >= 8) 
+    //check that the target isnt occupied by own team
+    if ((is_white(piece) && is_white(target)) || (is_black(piece) && is_black(target))) {
+            std::cout << "Invalid move: can't take own piece" << std::endl;
+            return false;
+    }
+    
+    //range check
+    if (new_x < 0 || new_x > 7 || new_y < 0 || new_y > 7) 
     {
         return false;
     }
@@ -124,24 +140,34 @@ bool chess_game::check_move(int old_x, int old_y, int new_x, int new_y)
             return (abs(delta_x) == 2 && abs(delta_y) == 1) || (abs(delta_x) == 1 && abs(delta_y) == 2);
 
         case PAWN_WHITE:
-            if (delta_y == 0 && board.get_piece(new_x, new_y) == EMPTY) 
+            //can't move horizontally, and new spot must be empty
+            if (delta_x == 0 && board.get_piece(new_x, new_y) == EMPTY) 
             {
-                if (old_x == 1 && delta_x == 2) return true;
-                return (delta_x == 1);
+                //starting position, double move rule
+                if (old_y == 1 && delta_y == 2) return true;
+                //otherwise can only move forward one
+                else if (delta_y == 1) return true;
+                //any other case is invalid
+                else return false;
             }
-            else if (abs(delta_y) == 1 && delta_x == 1 && is_black(target)) 
+            else if (abs(delta_x) == 1 && delta_y == 1 && is_black(target)) 
             {
                 return true;
             }
             return false;
 
         case PAWN_BLACK:
-            if (delta_y == 0 && board.get_piece(new_x, new_y) == EMPTY) 
+            //can't move horizontally, new spot must be empty
+            if (delta_x == 0 && board.get_piece(new_x, new_y) == EMPTY) 
             {
-                if (old_x == 6 && delta_x == -2) return true;
-                return (delta_x == -1);
+                //case starting double move
+                if (old_y == 6 && delta_y == -2) return true;
+                //case normal movement by 1
+                else if (delta_y == -1) return true;
+                //all other movements invalid
+                else return false;
             }
-            else if (abs(delta_y == 1 && delta_x == -1 && is_white(target))) 
+            else if (abs(delta_x) == 1 && delta_y == -1 && is_white(target)) 
             {
                 return true;
             }
@@ -151,6 +177,11 @@ bool chess_game::check_move(int old_x, int old_y, int new_x, int new_y)
             return false;
     }
 }
+
+//commits the move to the board
+void chess_game::make_move(int old_x, int old_y, int new_x, int new_y) {
+    board.move_piece(old_x, old_y, new_x, new_y);
+};
 
 bool chess_game::is_in_check() 
 {
