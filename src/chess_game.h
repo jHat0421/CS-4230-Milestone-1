@@ -9,12 +9,13 @@
 class chess_game
 {
 private:
-  chess_board board;
+
   bool current_player;
 
 public:
   chess_game();
 
+  chess_board board;
   void pass_turn();
   void print_board();
   bool get_player();

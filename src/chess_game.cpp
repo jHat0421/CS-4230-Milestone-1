@@ -215,9 +215,9 @@ bool chess_game::check_end()
     bool white_king_found = false;
     bool black_king_found = false;
 
-    for (int x = 0; x < 8; ++x) 
+    for (int x = 0; x < 8; x++) 
     {
-        for (int y = 0; y < 8; ++y) 
+        for (int y = 0; y < 8; y++) 
         {
             Piece piece = board.get_piece(x, y);
             if (piece == KING_WHITE) 

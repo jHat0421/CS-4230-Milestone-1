@@ -10,12 +10,12 @@ std::array<int, 4> to_array_space(std::array<int, 4> input_coords)
     std::array<int, 4> output_coords;
     
     // x-coordinates remain unchanged:
-    output_coords[0] = input_coords[0];
-    output_coords[2] = input_coords[2];
+    output_coords[1] = input_coords[0] - 1;
+    output_coords[3] = input_coords[2] - 1;
 
     // y-coordinates are inverted:
-    output_coords[1] = 8 - input_coords[1];
-    output_coords[3] = 8 - input_coords[3];
+    output_coords[0] = 8 - input_coords[1];
+    output_coords[2] = 8 - input_coords[3];
 
     return output_coords;
 }
@@ -23,15 +23,17 @@ std::array<int, 4> to_array_space(std::array<int, 4> input_coords)
 // Returns array of coordinates, or null if 'q'
 std::array<int, 4> get_input() 
 {
+    std::array<int, 4> null_array = {-1, -1, -1, -1};
+
     // Loop until valid input received:
-    while(true) 
+    while(true)
     {
         std::string input;
         getline(std::cin, input);
         if (input == "q") 
         {
             // Return no value for quit:
-            return {NULL, NULL, NULL, NULL};
+            return null_array;
         }
         else
         {
@@ -47,8 +49,9 @@ std::array<int, 4> get_input()
                 int old_y = match_results.str(1)[1] - '0';
                 int new_x = match_results.str(2)[0] - 'a' + 1;
                 int new_y = match_results.str(2)[1] - '0';
+                std::array<int, 4> result = {old_x, old_y, new_x, new_y};
 
-                return std::array{old_x, old_y, new_x, new_y};
+                return result;
             }
             else
             {
@@ -91,7 +94,7 @@ void play_game(chess_game* game)
             std::cout << "Input received." << std::endl;
             
             // If null input returned ('q' selection), exit game:
-            if (input == std::array<int, 4> {NULL, NULL, NULL, NULL}) 
+            if (input == std::array{NULL, NULL, NULL, NULL}) 
             {
                 std::cout << "Quitting game." << std::endl;
                 return;
@@ -110,7 +113,7 @@ void play_game(chess_game* game)
         }
         
         // Check game over condition (eihter king missing):
-        if (game->check_end()) 
+        if (!game->check_end())
         {
             std::cout << "Quitting Game" << std::endl;
             return;
@@ -130,7 +133,16 @@ void play_game(chess_game* game)
 // DEBUG MAIN
 int main()
 {
+    chess_game game = chess_game();
+    game.print_board();
+    std::cout << game.board.get_piece(0,6);
+
     std::array<int, 4> input = get_input();
+    input = to_array_space(input);
+    std::cout << input[0] << std::endl;
+    std::cout << input[1] << std::endl;
+    std::cout << input[2] << std::endl;
+    std::cout << input[3] << std::endl;
     
     return 0;
 }
