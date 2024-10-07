@@ -21,8 +21,6 @@ std::array<int, 4> to_array_space(std::array<int, 4> input_coords)
     return output_coords;
 }
 
-
-
 // Returns array of coordinates, or null if 'q'
 std::optional<std::array<int, 4>> get_input() 
 {
