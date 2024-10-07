@@ -1,4 +1,3 @@
-#include<optional>
 #include<string>
 #include<tuple>
 #include<regex>
@@ -6,7 +5,7 @@
 #include"chess_game.h"
 
 // Converts chess's standard bottom left origin grid to a top left origin grid:
-std::array<int, 4> to_array_space(std::array<int, 4> input_coords) 
+std::array<int, 4> to_array_space(std::array<int, 4> input_coords)
 {
     std::array<int, 4> output_coords;
     
@@ -22,7 +21,7 @@ std::array<int, 4> to_array_space(std::array<int, 4> input_coords)
 }
 
 // Returns array of coordinates, or null if 'q'
-std::optional<std::array<int, 4>> get_input() 
+std::array<int, 4> get_input() 
 {
     // Loop until valid input received:
     while(true) 
@@ -32,7 +31,7 @@ std::optional<std::array<int, 4>> get_input()
         if (input == "q") 
         {
             // Return no value for quit:
-            return std::nullopt;
+            return {NULL, NULL, NULL, NULL};
         }
         else
         {
@@ -51,7 +50,7 @@ std::optional<std::array<int, 4>> get_input()
 
                 return std::array{old_x, old_y, new_x, new_y};
             }
-            else 
+            else
             {
                 std::cout << "Invalid input, please try again." << std::endl;
             }
@@ -87,18 +86,18 @@ void play_game(chess_game* game)
         while(true) 
         {
             // Call formatted input handler:
-            std::optional<std::array<int, 4>> input = get_input();
+            std::array<int, 4> input = get_input();
             std::cout << "Input received." << std::endl;
             
             // If null input returned ('q' selection), exit game:
-            if (!input) 
+            if (input == std::array<int, 4> {NULL, NULL, NULL, NULL}) 
             {
                 std::cout << "Quitting game." << std::endl;
                 return;
             }
 
             // Attempt to make move:
-            if(game->check_move((*input)[0],(*input)[1], (*input)[2], (*input)[3]))
+            if(game->check_move((input)[0],(input)[1], (input)[2], (input)[3]))
             {
                 break;
             }
@@ -126,7 +125,15 @@ void play_game(chess_game* game)
     }
 }
 
-
+/*
+// DEBUG MAIN
+int main()
+{
+    std::array<int, 4> input = get_input();
+    
+    return 0;
+}
+*/
 
 int main()
 {
