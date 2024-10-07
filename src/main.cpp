@@ -1,14 +1,9 @@
-#include <optional>
-
+#include<optional>
 #include<string>
-
 #include<tuple>
-
 #include<regex>
 
 #include"chess_game.h"
-
-std::optional<std::array<int, 4>> get_input();
 
 void play_game(chess_game* game)
 {
@@ -31,82 +26,87 @@ void play_game(chess_game* game)
             std::cout << "Black Player's Turn:" << std::endl;
         }
 
-        std::cout << "Enter your move in chess notation ex 'a4-b6':" << std::endl;
+        std::cout << "Enter your move in chess notation (ex: 'a4-b6'):" << std::endl;
 
-        //loop until successful move is made or quit
-        while(true) {
-
-            //call get input to handle input
+        // Loop until successful move is made or quit
+        while(true) 
+        {
+            // Call formatted input handler:
             std::optional<std::array<int, 4>> input = get_input();
-            std::cout<<"input received"<< std::endl;
+            std::cout << "Input received." << std::endl;
             
-            //if no input returned quit game
-            if (!input) {
-                std::cout << "Quitting Game" << std::endl;
+            // If null input returned ('q' selection), exit game:
+            if (!input) 
+            {
+                std::cout << "Quitting game." << std::endl;
                 return;
             }
-            // attempt to make move
-            bool success = game->check_move((*input)[0],(*input)[1], (*input)[2], (*input)[3]);
-            if(success){
+
+            // Attempt to make move:
+            if(game->check_move((*input)[0],(*input)[1], (*input)[2], (*input)[3]))
+            {
                 break;
             }
-            else {
-                std::cout << "the move was unsuccessful - try again" << std::endl;
+            else 
+            {
+                std::cout << "Invalid move, please try again." << std::endl;
             }
             break;
         }
         
-
-
-        // game over condition -- a king is missing
-        if (game->check_end()) {
+        // Check game over condition (eihter king missing):
+        if (game->check_end()) 
+        {
             std::cout << "Quitting Game" << std::endl;
             return;
         }
 
-        //check for check notify if a king is in check
+        // Check for check:
         if (game->is_in_check()) {
             std::cout << "king is in check" << std::endl;
         }
         
-        //next round
+        // End player turn;
         game->pass_turn();
     }
 }
 
 // Returns array of coordinates, or null if 'q'
-std::optional<std::array<int, 4>> get_input() {
-
-    //loop until valid input received
+std::optional<std::array<int, 4>> get_input() 
+{
+    // Loop until valid input received:
     while(true) 
     {
         std::string input;
         getline(std::cin, input);
         if (input == "q") 
         {
-            return std::nullopt;  // Return no value for quit
+            // Return no value for quit:
+            return std::nullopt;
         }
         else
         {
-            // Regular expression for chess notation (e.g., "a4-b4")
-            std::regex notationPattern("^([a-h][1-8])-([a-h][1-8])$");
+            // Regular expression for chess notation (e.g., "a4-b4"):
+            std::regex notation_pattern("^([a-h][1-8])-([a-h][1-8])$");
             std::smatch match_results;
 
-            // Check if the input matches the pattern
-            if (std::regex_match(input, match_results, notationPattern)) {
-                //take the ascii character number, translate to an int
+            // Check if the input matches the pattern:
+            if (std::regex_match(input, match_results, notation_pattern)) 
+            {
+                // Translate ASCII to corresponding int:
                 int old_x = match_results.str(1)[0] - 'a' + 1;
                 int old_y = match_results.str(1)[1] - '0';
                 int new_x = match_results.str(2)[0] - 'a' + 1;
                 int new_y = match_results.str(2)[1] - '0';
 
                 return std::array{old_x, old_y, new_x, new_y};
-            } else {
-                std::cout << "invalid input - try again" << std::endl;
+            }
+            else 
+            {
+                std::cout << "Invalid input, please try again." << std::endl;
             }
         }
-    }
-    
+    }   
 }
 
 int main()
