@@ -14,8 +14,8 @@ std::array<int, 4> to_array_space(std::array<int, 4> input_coords)
     output_coords[3] = input_coords[2] - 1;
 
     // y-coordinates are inverted:
-    output_coords[0] = 8 - input_coords[1];
-    output_coords[2] = 8 - input_coords[3];
+    output_coords[0] = 8 - input_coords[1] - 1;
+    output_coords[2] = 8 - input_coords[3] - 1;
 
     return output_coords;
 }
@@ -45,12 +45,12 @@ std::array<int, 4> get_input()
             if (std::regex_match(input, match_results, notation_pattern)) 
             {
                 // Translate ASCII to corresponding int:
-                int old_x = match_results.str(1)[0] - 'a' + 1;
+                int old_x = match_results.str(1)[0] - 'a';
                 int old_y = match_results.str(1)[1] - '0';
-                int new_x = match_results.str(2)[0] - 'a' + 1;
+                int new_x = match_results.str(2)[0] - 'a';
                 int new_y = match_results.str(2)[1] - '0';
-                std::array<int, 4> result = {old_x, old_y, new_x, new_y};
 
+                std::array<int, 4> result = {old_x, old_y, new_x, new_y};
                 return result;
             }
             else
@@ -64,6 +64,8 @@ std::array<int, 4> get_input()
 // Main game loop:
 void play_game(chess_game* game)
 {
+    std::array<int, 4> null_array = {-1, -1, -1, -1};
+
     std::cout << "Starting Game!" << std::endl;
     std::cout << "(Input 'q' to Quit)" << std::endl;
 
@@ -94,7 +96,7 @@ void play_game(chess_game* game)
             std::cout << "Input received." << std::endl;
             
             // If null input returned ('q' selection), exit game:
-            if (input == std::array{NULL, NULL, NULL, NULL}) 
+            if (input == null_array)
             {
                 std::cout << "Quitting game." << std::endl;
                 return;
