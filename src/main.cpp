@@ -55,7 +55,7 @@ std::array<int, 4> get_input()
                 std::cout << "Invalid input, please try again." << std::endl;
             }
         }
-    }   
+    }
 }
 
 // Main game loop:
@@ -87,6 +87,7 @@ void play_game(chess_game* game)
         {
             // Call formatted input handler:
             std::array<int, 4> input = get_input();
+            input = to_array_space(input);
             std::cout << "Input received." << std::endl;
             
             // If null input returned ('q' selection), exit game:
