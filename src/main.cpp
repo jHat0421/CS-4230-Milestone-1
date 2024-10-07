@@ -5,6 +5,63 @@
 
 #include"chess_game.h"
 
+// Converts chess's standard bottom left origin grid to a top left origin grid:
+std::array<int, 4> to_array_space(std::array<int, 4> input_coords) 
+{
+    std::array<int, 4> output_coords;
+    
+    // x-coordinates remain unchanged:
+    output_coords[0] = input_coords[0];
+    output_coords[2] = input_coords[2];
+
+    // y-coordinates are inverted:
+    output_coords[1] = 8 - input_coords[1];
+    output_coords[3] = 8 - input_coords[3];
+
+    return output_coords;
+}
+
+
+
+// Returns array of coordinates, or null if 'q'
+std::optional<std::array<int, 4>> get_input() 
+{
+    // Loop until valid input received:
+    while(true) 
+    {
+        std::string input;
+        getline(std::cin, input);
+        if (input == "q") 
+        {
+            // Return no value for quit:
+            return std::nullopt;
+        }
+        else
+        {
+            // Regular expression for chess notation (e.g., "a4-b4"):
+            std::regex notation_pattern("^([a-h][1-8])-([a-h][1-8])$");
+            std::smatch match_results;
+
+            // Check if the input matches the pattern:
+            if (std::regex_match(input, match_results, notation_pattern)) 
+            {
+                // Translate ASCII to corresponding int:
+                int old_x = match_results.str(1)[0] - 'a' + 1;
+                int old_y = match_results.str(1)[1] - '0';
+                int new_x = match_results.str(2)[0] - 'a' + 1;
+                int new_y = match_results.str(2)[1] - '0';
+
+                return std::array{old_x, old_y, new_x, new_y};
+            }
+            else 
+            {
+                std::cout << "Invalid input, please try again." << std::endl;
+            }
+        }
+    }   
+}
+
+// Main game loop:
 void play_game(chess_game* game)
 {
     std::cout << "Starting Game!" << std::endl;
@@ -16,7 +73,7 @@ void play_game(chess_game* game)
         game->print_board();
         std::cout << std::endl;
 
-        //print active players turn
+        // Print active players turn:
         if (game->get_player())
         {
             std::cout << "White Player's Turn:" << std::endl;
@@ -71,43 +128,7 @@ void play_game(chess_game* game)
     }
 }
 
-// Returns array of coordinates, or null if 'q'
-std::optional<std::array<int, 4>> get_input() 
-{
-    // Loop until valid input received:
-    while(true) 
-    {
-        std::string input;
-        getline(std::cin, input);
-        if (input == "q") 
-        {
-            // Return no value for quit:
-            return std::nullopt;
-        }
-        else
-        {
-            // Regular expression for chess notation (e.g., "a4-b4"):
-            std::regex notation_pattern("^([a-h][1-8])-([a-h][1-8])$");
-            std::smatch match_results;
 
-            // Check if the input matches the pattern:
-            if (std::regex_match(input, match_results, notation_pattern)) 
-            {
-                // Translate ASCII to corresponding int:
-                int old_x = match_results.str(1)[0] - 'a' + 1;
-                int old_y = match_results.str(1)[1] - '0';
-                int new_x = match_results.str(2)[0] - 'a' + 1;
-                int new_y = match_results.str(2)[1] - '0';
-
-                return std::array{old_x, old_y, new_x, new_y};
-            }
-            else 
-            {
-                std::cout << "Invalid input, please try again." << std::endl;
-            }
-        }
-    }   
-}
 
 int main()
 {
