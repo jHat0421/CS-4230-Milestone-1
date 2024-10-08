@@ -86,10 +86,9 @@ void play_game(chess_game* game)
             }
 
             // Attempt to make move:
-            if(game->check_move((input)[0],(input)[1], (input)[2], (input)[3]))
+            if(game->make_move((input)[0],(input)[1], (input)[2], (input)[3]))
             {
-                //execute the move
-                game->make_move((input)[0],(input)[1], (input)[2], (input)[3]);
+                //continue
                 break;
             }
             else 

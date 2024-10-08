@@ -20,7 +20,7 @@ public:
   void print_board();
   bool get_player();
   bool check_move(int old_x, int old_y, int new_x, int new_y);
-  void make_move(int old_x, int old_y, int new_x, int new_y);
+  bool make_move(int old_x, int old_y, int new_x, int new_y);
   bool is_in_check();
   void promote_pawn(int x, int y);
   bool check_end();

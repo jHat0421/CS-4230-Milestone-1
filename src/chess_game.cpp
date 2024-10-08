@@ -92,15 +92,6 @@ bool chess_game::check_move(int old_x, int old_y, int new_x, int new_y)
         std::cout << "Invalid move: No piece at selected position" << std::endl;
         return false;
     }
-    //check that piece matches current player and that the target piece is other team
-    if (is_white(piece) && !get_player()) {
-        std::cout << "Invalid move: Black can't move white" << std::endl;
-        return false;
-    }
-    if (is_black(piece) && get_player()) {
-        std::cout << "Invalid move: white can't move black" << std::endl;
-        return false;
-    }
 
     //check that the target isnt occupied by own team
     if ((is_white(piece) && is_white(target)) || (is_black(piece) && is_black(target))) {
@@ -179,8 +170,26 @@ bool chess_game::check_move(int old_x, int old_y, int new_x, int new_y)
 }
 
 //commits the move to the board
-void chess_game::make_move(int old_x, int old_y, int new_x, int new_y) {
-    board.move_piece(old_x, old_y, new_x, new_y);
+bool chess_game::make_move(int old_x, int old_y, int new_x, int new_y) {
+    
+    Piece piece = board.get_piece(old_x, old_y);
+    
+    //check that piece matches current player and that the target piece is other team
+    if (is_white(piece) && !get_player()) {
+        std::cout << "Invalid move: Black can't move white" << std::endl;
+        return false;
+    }
+    if (is_black(piece) && get_player()) {
+        std::cout << "Invalid move: white can't move black" << std::endl;
+        return false;
+    }
+    if (check_move(old_x,old_y,new_x,new_y)) {
+        board.move_piece(old_x, old_y, new_x, new_y);
+        return true;
+    }
+    else {
+        return false;
+    }
 };
 
 bool chess_game::is_in_check() 
