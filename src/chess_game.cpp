@@ -185,6 +185,10 @@ bool chess_game::make_move(int old_x, int old_y, int new_x, int new_y) {
     }
     if (check_move(old_x,old_y,new_x,new_y)) {
         board.move_piece(old_x, old_y, new_x, new_y);
+
+        if (piece == PAWN_WHITE || piece == PAWN_BLACK) {
+            promote_pawn(new_x, new_y); // Call promotion check after move
+        }
         return true;
     }
     else {
@@ -240,11 +244,11 @@ void chess_game::promote_pawn(int x, int y)
 {
     Piece piece = board.get_piece(x,y);
 
-    if (piece == PAWN_WHITE && x == 7)
+    if (piece == PAWN_WHITE && y == 7)
     {
         board.set_piece(x,y,QUEEN_WHITE);
     }
-    else if (piece == PAWN_BLACK && x == 0)
+    else if (piece == PAWN_BLACK && y == 0)
     {
         board.set_piece(x,y,QUEEN_BLACK);
     }
