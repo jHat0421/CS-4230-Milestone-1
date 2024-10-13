@@ -107,7 +107,7 @@ void play_game(chess_game* game)
 
         // Check for check:
         if (game->is_in_check()) {
-            std::cout << "king is in check" << std::endl;
+            std::cout << "King is in Check!" << std::endl;
         }
         
         // End player turn;

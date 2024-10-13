@@ -68,10 +68,18 @@ chess_game::chess_game()
     current_player = WHITE;
 }
 
-void chess_game::pass_turn()
+void chess_game::pass_turn() 
 {
+    //Pass the turn to the opponent
     current_player = !current_player;
+
+    //Check if the new current player (opponent) is in check
+    if (is_in_check()) 
+    {
+        std::cout << (current_player ? "White" : "Black") << "'s king is in check!" << std::endl;
+    }
 }
+
 
 void chess_game::print_board()
 {
@@ -201,6 +209,7 @@ bool chess_game::is_in_check()
     int king_x = -1, king_y = -1;
     Piece king_piece = current_player ? KING_WHITE : KING_BLACK;
 
+    //Find the current player's king
     for (int i = 0; i < 8; i++) 
     {
         for (int j = 0; j < 8; j++) 
@@ -214,18 +223,23 @@ bool chess_game::is_in_check()
         }
     }
 
+    //Check if king is on the board
     if (king_x == -1 || king_y == -1) 
     {
         return false;
     }
 
+    //Check if opponent's pieces can attack the king
     for (int i = 0; i < 8; i++) 
     {
         for (int j = 0; j < 8; j++) 
         {
             Piece opponent_piece = board.get_piece(i, j);
 
-            if (opponent_piece == EMPTY || (current_player && is_white(opponent_piece)) || (!current_player && is_black(opponent_piece))) 
+            //Skip empty squares and current player's pieces
+            if (opponent_piece == EMPTY || 
+               (current_player && is_white(opponent_piece)) || 
+               (!current_player && is_black(opponent_piece))) 
             {
                 continue;
             }
@@ -237,8 +251,10 @@ bool chess_game::is_in_check()
         }
     }
 
-    return false;
+    return false; //No check detected
 }
+
+
 
 void chess_game::promote_pawn(int x, int y)
 {
