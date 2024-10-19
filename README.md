@@ -4,7 +4,10 @@ This is a chess game built in C++ using CMake for compilation.
 
 ## Running Instructions
 
-An exe build file has been pre built and provided in the main repo directory. Double click to run
+An exe build file has been pre built and provided in the main repo directory. Double click to run or navigate to the directory and enter
+
+ ```bash
+  ./ChessGame.exe
 
 ## Re Build Instructions
 
