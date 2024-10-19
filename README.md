@@ -21,13 +21,13 @@ To re build the project, follow these steps:
    cd build
 
 3. **Run cmake**
-  ```bash
+   ```bash
    cmake ..
 
 4. **Navigate to build/debug**
-  ```bash
+   ```bash
    cd build/debug
 
 5. **Run the program**
-  ```bash
+   ```bash
    ./ChessGame.exe
