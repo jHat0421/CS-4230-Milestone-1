@@ -1,10 +1,33 @@
-<div>
-  <h1> <u> Building with CMake: </u> </h1>
-  <ol>
-    <li> Ensure you have CMake installed on your machine and added to system PATH. </li>
-    <li> Clone repository. </li>
-    <li> Create new directory in newly cloned repository named 'build.' </li>
-    <li> Navigate to the new directory in the terminal, and execute the command 'cmake ..' </li>
-    <li>  Execute the created .exe located in the 'Debug' directory created by the previous command. </li>
-  </ol>
-</div>
+# Chess Game
+
+This is a chess game built in C++ using CMake for compilation.
+
+## Running Instructions
+
+An exe build file has been pre built and provided in the main repo directory. Double click to run
+
+## Re Build Instructions
+
+To re build the project, follow these steps:
+
+1. **Create a build directory:**
+
+   ```bash
+   mkdir build
+
+1. **Change to build directory**
+
+    ```bash
+   cd build
+
+3. **Run cmake**
+  ```bash
+   cmake ..
+
+4. **Navigate to build/debug**
+  ```bash
+   cd build/debug
+
+5. **Run the program**
+  ```bash
+   ./ChessGame.exe
