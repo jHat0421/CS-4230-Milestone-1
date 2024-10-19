@@ -39,7 +39,7 @@ std::array<int, 4> get_input()
             }
             else
             {
-                std::cout << "Invalid input, please try again." << std::endl;
+                std::cout << "Re-enter your move in lowercase chess notation or 'q' to quit (ex: 'a4-b6'):" << std::endl;
             }
         }
     }
@@ -69,19 +69,18 @@ void play_game(chess_game* game)
             std::cout << "Black Player's Turn:" << std::endl;
         }
 
-        std::cout << "Enter your move in chess notation (ex: 'a4-b6'):" << std::endl;
+        std::cout << "Enter your move in lowercase chess notation or 'q' to quit (ex: 'a4-b6'):" << std::endl;
 
         // Loop until successful move is made or quit
         while(true) 
         {
             // Call formatted input handler:
             std::array<int, 4> input = get_input();
-            std::cout << "Input received." << std::endl;
             
             // If null input returned ('q' selection), exit game:
             if (input == null_array)
             {
-                std::cout << "Quitting game." << std::endl;
+                std::cout << "Quitting game!" << std::endl;
                 return;
             }
 
@@ -94,7 +93,7 @@ void play_game(chess_game* game)
             else 
             {
                 //retry input
-                std::cout << "Invalid move, please try again." << std::endl;
+                std::cout << "Re-nter a valid move in lowercase chess notation or 'q' to quit (ex: 'a4-b6'):" << std::endl;
             }
         }
         

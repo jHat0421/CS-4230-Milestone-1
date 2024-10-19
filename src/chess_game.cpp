@@ -103,7 +103,7 @@ bool chess_game::check_move(int old_x, int old_y, int new_x, int new_y)
 
     //check that the target isnt occupied by own team
     if ((is_white(piece) && is_white(target)) || (is_black(piece) && is_black(target))) {
-            std::cout << "Invalid move: can't take own piece" << std::endl;
+            std::cout << "Invalid move: spot already occupied" << std::endl;
             return false;
     }
     
