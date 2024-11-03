@@ -1,36 +1,46 @@
-# Note: CMake support is community-based. The maintainers do not use CMake
-# internally.
+# CMake Standards
+cmake_minimum_required(VERSION 3.10)
+project(ChessGame)
 
-cmake_minimum_required(VERSION 3.13)
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-project(googletest-distribution)
-set(GOOGLETEST_VERSION 1.15.2)
+# Define Source Files
+set(SOURCE_FILES
+    src/main.cpp
+    src/chess_game.cpp
+    src/chess_board.cpp
+)
 
-if(NOT CYGWIN AND NOT MSYS AND NOT ${CMAKE_SYSTEM_NAME} STREQUAL QNX)
-  set(CMAKE_CXX_EXTENSIONS OFF)
+# Include directories for headers
+include_directories(${CMAKE_SOURCE_DIR}/src)
+
+# Main executable for the chess game
+add_executable(${PROJECT_NAME} ${SOURCE_FILES})
+
+# Compilation Settings
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -pedantic)
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    target_compile_options(${PROJECT_NAME} PRIVATE /W4 /permissive-)
 endif()
 
+# Add GoogleTest
+# Specify the path to GoogleTest directory (adjust the path as necessary)
+add_subdirectory(${CMAKE_SOURCE_DIR}/googletest)
+
+# Enable Testing
 enable_testing()
 
-include(CMakeDependentOption)
-include(GNUInstallDirs)
+# Define library for chess functionality
+add_library(chess_lib src/chess_board.cpp src/chess_game.cpp)
 
-# Note that googlemock target already builds googletest.
-option(BUILD_GMOCK "Builds the googlemock subproject" ON)
-option(INSTALL_GTEST "Enable installation of googletest. (Projects embedding googletest may want to turn this OFF.)" ON)
-option(GTEST_HAS_ABSL "Use Abseil and RE2. Requires Abseil and RE2 to be separately added to the build." OFF)
+# Test executable
+add_executable(runTests tests/chess_board_test.cpp)
 
-if(GTEST_HAS_ABSL)
-  if(NOT TARGET absl::base)
-    find_package(absl REQUIRED)
-  endif()
-  if(NOT TARGET re2::re2)
-    find_package(re2 REQUIRED)
-  endif()
-endif()
+# Link the test executable against GoogleTest and the chess library
+target_link_libraries(runTests gtest gtest_main chess_lib)
 
-if(BUILD_GMOCK)
-  add_subdirectory( googlemock )
-else()
-  add_subdirectory( googletest )
-endif()
+# Register tests with CMake
+add_test(NAME ChessBoardTests COMMAND runTests)
