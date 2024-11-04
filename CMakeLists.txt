@@ -42,7 +42,7 @@ FetchContent_MakeAvailable(googletest)
 add_library(chess_lib src/chess_board.cpp src/chess_game.cpp)
 
 # Test executable
-add_executable(runTests tests/chess_board_test.cpp)
+add_executable(runTests tests/chess_board_test.cpp tests/chess_game_test.cpp)
 
 # Link the test executable against GoogleTest and the chess library
 target_link_libraries(runTests gtest gtest_main chess_lib)
