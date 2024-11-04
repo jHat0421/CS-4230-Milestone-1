@@ -26,12 +26,17 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     target_compile_options(${PROJECT_NAME} PRIVATE /W4 /permissive-)
 endif()
 
-# Add GoogleTest
-# Specify the path to GoogleTest directory (adjust the path as necessary)
-add_subdirectory(${CMAKE_SOURCE_DIR}/googletest)
+# Git clone googletest with FetchContent:
+include(FetchContent)
+FetchContent_Declare(
+  googletest
+  # Specify the commit you depend on and update it regularly.
+  URL https://github.com/google/googletest/archive/5376968f6948923e2411081fd9372e71a59d8e77.zip
+)
 
-# Enable Testing
-enable_testing()
+# Necessary for Windows Functionality: (Prevent overriding the parent project's compiler/linker settings)
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(googletest)
 
 # Define library for chess functionality
 add_library(chess_lib src/chess_board.cpp src/chess_game.cpp)
